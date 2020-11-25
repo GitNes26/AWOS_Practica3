@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ComentarioSeeder extends Seeder
 {
@@ -11,6 +12,12 @@ class ComentarioSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('comentarios')->insert([
+            'comentario' => 'La laptop cuenta con R7?',
+            'usuario_id' => 2,
+            'producto_id' => 1
+        ]);
+
+        factory(App\Models\Comentario::class,10)->create();
     }
 }

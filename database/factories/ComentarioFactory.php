@@ -2,11 +2,13 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Model;
+use App\Models\Comentario;
 use Faker\Generator as Faker;
 
-$factory->define(Model::class, function (Faker $faker) {
+$factory->define(Comentario::class, function (Faker $faker) {
     return [
-        //
+        'comentario' => $faker->sentence(3),
+        'usuario_id' => App\Models\User::all()->random()->id,
+        'producto_id' => App\Models\Producto::all()->random()->id
     ];
 });

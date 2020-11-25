@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ProductoSeeder extends Seeder
 {
@@ -11,6 +12,11 @@ class ProductoSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('productos')->insert([
+            'producto' => 'Laptop Huawei MateBook X',
+            'cantidad' => '97'
+        ]);
+
+        factory(App\Models\Producto::class,10)->create();
     }
 }
