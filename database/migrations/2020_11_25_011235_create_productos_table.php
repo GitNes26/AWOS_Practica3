@@ -17,6 +17,7 @@ class CreateProductosTable extends Migration
             $table->id();
             $table->string('producto')->unique();
             $table->integer('cantidad');
+            $table->foreignId('vendedor_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

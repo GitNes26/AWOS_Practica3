@@ -26,7 +26,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 //CRUD PRODUCTOS
 Route::get('/productos/{id?}', 'API\ProductoController@index')->where(['id','[0-9]+']);
-Route::post('/productos', 'API\ProductoController@crear');
+// Route::post('/productos', 'API\ProductoController@crear');
 Route::put('/productos/{id}', 'API\ProductoController@editar')->where(['id','[0-9]+']);
 Route::delete('/productos/{id}', 'API\ProductoController@eliminar')->where(['id','[0-9]+'])->middleware('verifica.cantidad');
 
@@ -46,3 +46,9 @@ Route::post('/login', 'ApiAuth\AuthController@logIn');
 Route::middleware('auth:sanctum')->get('/usuarios', 'ApiAuth\AuthController@index');
 Route::middleware('auth:sanctum')->delete('/logout', 'ApiAuth\AuthController@logOut');
 Route::middleware('auth:sanctum')->post('/permisos', 'ApiAuth\AuthController@otorgarPermiso');
+
+//MAILS
+Route::post('/enviarCorreo', 'CorreoController@enviarCorreo');
+
+Route::get('/validarCuenta/{id}', 'ApiAuth\AuthController@activacionCuenta');
+Route::middleware('auth:sanctum')->post('/productos', 'API\ProductoController@crear');

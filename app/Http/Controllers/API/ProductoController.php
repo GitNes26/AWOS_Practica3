@@ -4,7 +4,18 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Scope;
 use App\Models\Producto;
+use App\Models\User;
+use App\Mail\CorreoClass;
+use App\Mail\CorreoProductoClass;
+use App\Mail\CorreoProductoAdminClass;
+use App\Mail\CorreoSolicitudPermisoClass;
+use Illuminate\Support\Facades\Mail;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 
 class ProductoController extends Controller
 {
@@ -22,13 +33,35 @@ class ProductoController extends Controller
         //     'producto' => $request->producto,
         //     'cantidad' => $request->cantidad
         // ]);
-        $producto = new Producto;
-        $producto->producto = $request->producto;
-        $producto->cantidad = $request->cantidad;
+        if($request->user()->TokenCan('admin:admin') || $request->user()->TokenCan('user:vendedor')){
+            $producto = new Producto;
+            $producto->producto = $request->producto;
+            $producto->cantidad = $request->cantidad;
 
-        if($producto)
-            return response()->json(["Producto Creado Satisfactoriamente" => $producto],201);
-        return response()->json(null,400);
+            $usuario = $request->user()['name'];
+            $correo = $request->user()['email'];
+
+            if($producto->save()){
+                $todo = [
+                    'usuario'=>$usuario,
+                    'correo'=> $correo,
+                    'producto'=> $producto->producto,
+                    'cantidad'=> $producto->cantidad
+                ];
+                $enviarCorreoAdmin = Mail::to('19170068@uttcampus.edu.mx')->send(new CorreoProductoAdminClass($todo));
+                $enviarCorreoVendedor = Mail::to($todo['correo'])->send(new CorreoProductoClass($todo));
+
+                return response()->json(["Producto Creado Satisfactoriamente" => $producto],201);
+            }
+        }
+        else{
+            // $usuario = $request->user($usuario->name);
+            // $correo = $request->user($usuario->email);
+
+            $enviarCorreoAdmin = Mail::to('19170068@uttcampus.edu.mx')->send(new CorreoSolicitudPermisoClass($todo));
+
+            return response()->json("No tienes permisos para registrar productos. Se ha enviado un correo para solicitar permiso.",400);
+        }
     }
 
     public function editar($id, Request $request){

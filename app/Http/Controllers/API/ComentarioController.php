@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\Comentario;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+
 class ComentarioController extends Controller
 {
     public function index($id=null){
@@ -19,13 +24,26 @@ class ComentarioController extends Controller
     }
 
     public function crear(Request $request){
-        $comentario = new Comentario;
-        $comentario->comentario = $request->comentario;
-        $comentario->usuario_id = $request->ID_usuario;
-        $comentario->producto_id = $request->ID_producto;
+            $comentario = new Comentario;
+            $comentario->comentario = $request->comentario;
+            $comentario->usuario_id = $request->ID_usuario;
+            $comentario->producto_id = $request->ID_producto;
 
-        if($comentario->save())
-            return response()->json(["Comentario publicado exitosamente" => $comentario],201);
+            if($comentario->save()){
+                $consulta = Comentario::join('users','comentarios.usuario_id','users.id')->join('productos','comentarios.producto_id','productos.id')->select('comentario as Comentario','email as Correo','producto as Producto')->where('users.id',$request->ID_usuario)->orderByDesc('comentarios.id')->limit(1)->get();
+                // return response()->json(["Comentario publicado exitosamente" => $comentario],201);
+
+                $todo = [
+                    'usuario'=>$consulta->Comentario,
+                    'correo'=> $consulta->correo,
+                    'producto'=> $consulta->producto,
+                ];
+                $enviarCorreoVendedor = Mail::to('19170068@uttcampus.edu.mx')->send(new CorreoProductoAdminClass($todo));
+                $enviarCorreoUsuario = Mail::to($todo['correo'])->send(new CorreoProductoClass($todo));
+
+                return response()->json(["Comentario publicado exitosamente" => $usuario],201);
+
+            }
         return response()->json("No se ha podido publicar tu comentario, revisa tus datos.",400);
     }
 

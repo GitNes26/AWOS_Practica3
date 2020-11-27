@@ -42,7 +42,12 @@ class User extends Authenticatable
     ];
 
     public function comentarios(){
-        $this->hasMany('App\Models\Comentario');
+        return $this->hasMany('App\Models\Comentario');
         // Esta tabla 'users(User)' TIENE UNA RELACION con la tabla 'comentarios(Comentario)
+    }
+
+    public function productos(){
+        return $this->HasOne('App\Models\Producto');
+        // Esta tabla 'users(User)' TIENE UNA RELACION con la tabla 'productos(Producto)
     }
 }

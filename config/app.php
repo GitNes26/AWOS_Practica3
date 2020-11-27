@@ -15,6 +15,9 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'mjapikeypub' => env('MJ_APIKEY_PUBLIC', null),
+    'mjapikeypriv'=> env('MJ_APIKEY_PRIVATE', null),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
