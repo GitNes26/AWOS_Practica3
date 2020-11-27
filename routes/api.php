@@ -19,10 +19,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 //CRUD USUARIOS
-Route::get('/usuarios/{id?}', 'API\UsuarioController@index')->where(['id','[0-9]+']);
-Route::post('/usuarios', 'API\UsuarioController@crear');
-Route::put('/usuarios/{id}', 'API\UsuarioController@editar')->where(['id','[0-9]+']);
-Route::delete('/usuarios/{id}', 'API\UsuarioController@eliminar')->where(['id','[0-9]+'])->middleware('verifica.admin');
+// Route::get('/usuarios/{id?}', 'API\UsuarioController@index')->where(['id','[0-9]+']);
+// Route::post('/usuarios', 'API\UsuarioController@crear');
+// Route::put('/usuarios/{id}', 'API\UsuarioController@editar')->where(['id','[0-9]+']);
+// Route::delete('/usuarios/{id}', 'API\UsuarioController@eliminar')->where(['id','[0-9]+'])->middleware('verifica.admin');
 
 //CRUD PRODUCTOS
 Route::get('/productos/{id?}', 'API\ProductoController@index')->where(['id','[0-9]+']);
@@ -39,3 +39,10 @@ Route::delete('/comentarios/{id}', 'API\ComentarioController@eliminar')->where('
 //CONSULTAS
 Route::get('/comentariosXusuario/{id}', 'API\ComentarioController@comentariosUsuario')->where(['id','[0-9]+']);
 Route::get('/comentariosXproducto/{id}', 'API\ComentarioController@comentariosProducto')->where(['id','[0-9]+']);
+
+//TOKENS
+Route::post('/registro', 'ApiAuth\AuthController@registro');
+Route::post('/login', 'ApiAuth\AuthController@logIn');
+Route::middleware('auth:sanctum')->get('/usuarios', 'ApiAuth\AuthController@index');
+Route::middleware('auth:sanctum')->delete('/logout', 'ApiAuth\AuthController@logOut');
+Route::middleware('auth:sanctum')->post('/permisos', 'ApiAuth\AuthController@otorgarPermiso');
