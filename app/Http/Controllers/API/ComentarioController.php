@@ -30,7 +30,7 @@ class ComentarioController extends Controller
             $comentario->producto_id = $request->ID_producto;
 
             if($comentario->save()){
-                $consulta = Comentario::join('users','comentarios.usuario_id','users.id')->join('productos','comentarios.producto_id','productos.id')->select('comentario as Comentario','email as Correo','producto as Producto')->where('users.id',$request->ID_usuario)->orderByDesc('comentarios.id')->limit(1)->get();
+                $consulta = Comentario::join('users','comentarios.usuario_id','users.id')->join('productos','comentarios.producto_id','productos.id')->select('comentario as Comentario','email as Correo','producto as Producto', 'vendedor_id as Vendedor')->where('users.id',$request->ID_usuario)->orderByDesc('comentarios.id')->limit(1)->get();
                 // return response()->json(["Comentario publicado exitosamente" => $comentario],201);
 
                 $todo = [

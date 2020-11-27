@@ -18,6 +18,6 @@ class ComentarioSeeder extends Seeder
             'producto_id' => 1
         ]);
 
-        factory(App\Models\Comentario::class,10)->create();
+        factory(App\Models\Comentario::class,1)->create();
     }
 }

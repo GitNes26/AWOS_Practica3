@@ -14,9 +14,10 @@ class ProductoSeeder extends Seeder
     {
         DB::table('productos')->insert([
             'producto' => 'Laptop Huawei MateBook X',
-            'cantidad' => '97'
+            'cantidad' => '97',
+            'vendedor_id' => 2
         ]);
 
-        factory(App\Models\Producto::class,10)->create();
+        factory(App\Models\Producto::class,2)->create();
     }
 }

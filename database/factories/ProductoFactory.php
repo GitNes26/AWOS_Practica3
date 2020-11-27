@@ -8,6 +8,7 @@ use Faker\Generator as Faker;
 $factory->define(Producto::class, function (Faker $faker) {
     return [
         'producto' => $faker->unique()->word,
-        'cantidad' => $faker->numberBetween($min=0, $max=100)
+        'cantidad' => $faker->numberBetween($min=0, $max=100),
+        'vendedor_id' => App\Models\User::all()->random()->id
     ];
 });

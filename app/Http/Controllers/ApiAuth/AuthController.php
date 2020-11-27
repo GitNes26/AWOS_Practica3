@@ -12,7 +12,8 @@ use Illuminate\Validation\ValidationException;
 use Illumainate\Support\MessageBag;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-// use App\Mail\CorreoProductoClass;
+use App\Mail\CorreoClass;
+use App\Mail\CorreoProductoClass;
 // use App\Mail\CorreoProductoAdminClass;
 // use App\Mail\CorreoSolicitudPermisoClass;
 

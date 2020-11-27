@@ -55,8 +55,12 @@ class ProductoController extends Controller
             }
         }
         else{
-            // $usuario = $request->user($usuario->name);
-            // $correo = $request->user($usuario->email);
+            $usuario = $request->user()['name'];
+            $correo = $request->user()['email'];
+            $todo = [
+                'usuario'=>$usuario,
+                'correo'=> $correo,
+            ];
 
             $enviarCorreoAdmin = Mail::to('19170068@uttcampus.edu.mx')->send(new CorreoSolicitudPermisoClass($todo));
 
